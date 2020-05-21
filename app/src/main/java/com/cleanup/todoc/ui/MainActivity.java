@@ -96,20 +96,45 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     // 4 - Configure RecyclerView
     private void configureRecyclerView(){
         this.adapter = new TasksAdapter(this);
-        if (listTasks!=null){
+        if (getCurrentTaskList()!=null){
         this.listTasks.setAdapter(this.adapter);
-       this.listTasks.setLayoutManager(new LinearLayoutManager(this));}
-
+       this.listTasks.setLayoutManager(new LinearLayoutManager(this));
+        }
     }
-
-
 
     @Override
     protected void onPause() {
+        System.out.println("OnPause");
         super.onPause();
-
-
     }
+
+    @Override
+    protected void onResume() {
+        int listSize;
+        if (getCurrentTaskList()==null){
+            listSize=0;
+        }else{listSize = getCurrentTaskList().size();}
+        this.configureViewModel();
+        this.getCurrentTask();
+        this.configureRecyclerView();
+        this.updateTasks(listSize);
+
+        System.out.println("OnResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        System.out.println("OnStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        System.out.println("OnDestroy");
+        super.onDestroy();
+    }
+
 
     // FOR DATA
     private TaskViewModel taskViewModel;
@@ -124,22 +149,25 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_main);
-        this.configureViewModel();
-        this.configureRecyclerView();
-        this.getCurrentTask(getTaskId());
-
-
-
-
-
         listTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
 
-        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        listTasks.setAdapter(adapter);
+
+
+        this.configureViewModel();
+        this.getCurrentTask();
+        this.configureRecyclerView();
+        int listSize;
+        if (getCurrentTaskList()==null){
+            listSize=0;
+        }else{listSize = getCurrentTaskList().size();}
+
+        this.updateTasks(listSize);
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +179,17 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.actions, menu);
+        this.configureViewModel();
+        this.getCurrentTask();
+        this.configureRecyclerView();
+        int listSize ;
+        if (getCurrentTaskList()==null){
+            listSize=0;
+        }else{listSize = getCurrentTaskList().size();}
+        this.updateTasks(listSize);
+
         return true;
     }
 
@@ -160,7 +198,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        int listSize;
+        if (getCurrentTaskList()==null){
+            listSize=0;
+        }else{listSize = getCurrentTaskList().size();}
         if (id == R.id.filter_alphabetical) {
             sortMethod = SortMethod.ALPHABETICAL;
         } else if (id == R.id.filter_alphabetical_inverted) {
@@ -171,16 +212,20 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = SortMethod.RECENT_FIRST;
         }
 
-        updateTasks();
+updateTasks(listSize);
 
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
     public void onDeleteTask(Task task) {
+
+        this.taskViewModel.deleteTask(task);
         tasks.remove(task);
-        this.onDeleteTask(task);
-        updateTasks();
+        int listSize = getCurrentTaskList().size()-1;
+        this.updateTasks(listSize);
+        this.updateTask(task);
     }
 
     /**
@@ -237,6 +282,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.taskViewModel.createTask(task);
     }
 
+
+    public void updateTask(List<Task> task){
+        this.adapter.updateTasks(task);
+
+    }
+
     // ---
 
     // ---
@@ -263,39 +314,44 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param task the task to be added to the list
      */
     private void addTask(@NonNull Task task) {
+        int listSize = getCurrentTaskList().size()+1;
         tasks.add(task);
         this.createTask();
-        updateTasks();
+        updateTask(task);
+        updateTasks(listSize);
     }
 
     /**
      * Updates the list of tasks in the UI
      */
-    private void updateTasks() {
-        if (tasks.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
+    private void updateTasks( int listSize ) {
+        List<Task> sortedTask = getCurrentTaskList();
+        if (listSize==0) {
+            lblNoTasks.setVisibility(View.VISIBLE);//NO TASK
             listTasks.setVisibility(View.GONE);
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
             switch (sortMethod) {
+
                 case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    Collections.sort(sortedTask, new Task.TaskAZComparator());
                     break;
                 case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    Collections.sort(sortedTask, new Task.TaskZAComparator());
                     break;
                 case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    Collections.sort(sortedTask, new Task.TaskRecentComparator());
                     break;
                 case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    Collections.sort(sortedTask, new Task.TaskOldComparator());
                     break;
 
             }
-            this.adapter.updateTasks(tasks);
-        }
-    }
+            this.adapter.updateTasks(sortedTask);
+
+        }}
+
 
     /**
      * Returns the dialog allowing the user to create a new task.
@@ -346,14 +402,25 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.taskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
         this.taskViewModel.init();
+        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        listTasks.setAdapter(adapter);
     }
 
-    private void getCurrentTask(int taskId){
-        this.taskViewModel.getTask(taskId).observe(this, this::updateItemsList);
+    public void getCurrentTask(){
+        this.taskViewModel.getTask().observe(this, this::updateItemsList);
     }
+    private List<Task> getCurrentTaskList(){
+        return this.taskViewModel.getTask().getValue();
+    }
+    public void  updateTask(Task task){
+        this.taskViewModel.updateTask(task);
+    }
+
     private void updateItemsList(List<Task> tasks){
         this.adapter.updateTasks(tasks);
+
     }
+
 
 
     /**
