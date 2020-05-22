@@ -37,13 +37,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     /**
      * Instantiates a new TasksAdapter.
-     *
      */
     TasksAdapter(@NonNull final DeleteTaskListener callback) {
         this.callback = callback;
         this.tasks = new ArrayList<>();
 
     }
+
     /**
      * Listener for deleting tasks
      */
@@ -55,6 +55,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
          */
         void onDeleteTask(Task task);
     }
+
     private final DeleteTaskListener callback;
 
 
@@ -79,14 +80,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
-        taskViewHolder.bind(tasks.get(position),callback);
+        taskViewHolder.bind(tasks.get(position), callback);
+
     }
 
     @Override
     public int getItemCount() {
         return tasks.size();
     }
-
 
 
     /**
@@ -123,11 +124,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         /**
          * FOR DATA
          */
-         WeakReference<TasksAdapter.DeleteTaskListener> callbackWeakRef;
+        WeakReference<TasksAdapter.DeleteTaskListener> callbackWeakRef;
+
         /**
          * Instantiates a new TaskViewHolder.
          *
-         * @param itemView the view of the task item
+         * @param itemView           the view of the task item
          * @param deleteTaskListener the listener for when a task needs to be deleted to set
          */
         TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
@@ -157,8 +159,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
          *
          * @param task the task to bind in the item view
          */
-        void bind(Task task,DeleteTaskListener callback) {
-            this.callbackWeakRef= new WeakReference<DeleteTaskListener>(callback);
+        void bind(Task task, DeleteTaskListener callback) {
+            this.callbackWeakRef = new WeakReference<DeleteTaskListener>(callback);
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
@@ -174,11 +176,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         }
     }
 
-    public void updateData(List<Task> task){
+    public void updateData(List<Task> task) {
+
         this.tasks = task;
         this.notifyDataSetChanged();
     }
-
 
 
 }

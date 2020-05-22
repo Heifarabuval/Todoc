@@ -24,25 +24,19 @@ public class TaskViewModel extends ViewModel {
         this.taskDataRepository = taskDataRepository;
         this.executor = executor;
     }
-    public void init(){
-        if(this.currentTasks !=null){
+
+    public void init() {
+        if (this.currentTasks != null) {
             return;
         }
         currentTasks = taskDataRepository.getTasks();
     }
 
-    public LiveData<List<Task>> getTask(long taskId){return this.currentTasks;}
+    public LiveData<List<Task>> getTask() {
+        return this.currentTasks;
+    }
 
-    public void createTask(final Task task){
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                taskDataRepository.createTask(task);
-            }
-        });
-}
-
-    public void deleteTask(final Task task){
+    public void createTask(final Task task) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -51,11 +45,20 @@ public class TaskViewModel extends ViewModel {
         });
     }
 
-    public void updateTask(final Task task){
+    public void deleteTask(final Task task) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                taskDataRepository.createTask(task);
+                taskDataRepository.deleteTask(task);
+            }
+        });
+    }
+
+    public void updateTask(final Task task) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                taskDataRepository.updateDatabase(task);
             }
         });
     }

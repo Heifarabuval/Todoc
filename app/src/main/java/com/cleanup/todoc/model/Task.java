@@ -3,6 +3,7 @@ package com.cleanup.todoc.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -25,10 +26,12 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    /*public Task(){}*/
+
     /**
      * The unique identifier of the project associated to the task
      */
-    @ForeignKey(entity = Project.class, parentColumns = "id",childColumns = "projectId")
+    @ForeignKey(entity = Project.class, parentColumns = "id", childColumns = "projectId")
     private long projectId;
 
     /**
@@ -46,13 +49,14 @@ public class Task {
 
     /**
      * Instantiates a new Task.
+     * <p>
+     * the unique identifier of the task to set
      *
-     *          the unique identifier of the task to set
      * @param projectId         the unique identifier of the project associated to the task to set
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task( long projectId, @NonNull String name, long creationTimestamp) {
+    public Task(long projectId, @NonNull String name, long creationTimestamp) {
 
         this.setProjectId(projectId);
         this.setName(name);
@@ -130,6 +134,8 @@ public class Task {
         return creationTimestamp;
     }
 
+
+    // ------- UTILS ----------
     /**
      * Comparator to sort task from A to Z
      */
@@ -169,4 +175,15 @@ public class Task {
             return (int) (left.creationTimestamp - right.creationTimestamp);
         }
     }
+
+    /*
+public static Task fromContentValues(ContentValues values){
+        final Task task = new Task();
+        if(values.containsKey("id")) task.setId(values.getAsLong("id"));
+    if(values.containsKey("")) task.setId(values.getAsLong("id"));
+    if(values.containsKey("")) task.setId(values.getAsLong(""));
+    if(values.containsKey("")) task.setId(values.getAsLong(""));
+        return task;
+}*/
+
 }

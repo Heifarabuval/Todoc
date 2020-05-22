@@ -71,13 +71,13 @@ public class ItemDaoTest {
     @Test
     public void deleteAndCheckTask()throws InterruptedException{
         //BEFORE : Adding a new task
-        this.database.taskDao().deleteTask(TASK_ID);
+        this.database.taskDao().deleteTask(TASK_DEMO);
         List<Task> task =  LiveDataTestUtil.getValue(this.database.taskDao().getTasks());
         assertFalse(task.contains(TASK_DEMO));
 
     }
     @Test
-    public void getItemsWhenNoItemInserted() throws InterruptedException {
+    public void getTaskWhenNoItemInserted() throws InterruptedException {
         // TEST
         List<Task> items = LiveDataTestUtil.getValue(this.database.taskDao().getTasks());
         assertTrue(items.isEmpty());

@@ -11,18 +11,34 @@ public class TaskDataRepository {
 
     private final TaskDao taskDao;
 
-    public TaskDataRepository(TaskDao taskDao) { this.taskDao = taskDao; }
+    public TaskDataRepository(TaskDao taskDao) {
+        this.taskDao = taskDao;
+    }
 
     //GET
-    public LiveData<List<Task>> getTasks(){return this.taskDao.getTasks();}
+    public LiveData<List<Task>> getTasks() {
+        return this.taskDao.getTasks();
+    }
+    public LiveData<List<Task>> getTasksWithCurso() {
+        return this.taskDao.getTasksWithCursor();
+    }
 
-    public LiveData<List<Task>> getTasksWithId(long id){return this.taskDao.getTaskWithId();}
+    public LiveData<List<Task>> getTasksWithId(long id) {
+        return this.taskDao.getTaskWithId();
+    }
+
     //CREATE
-    public void createTask(Task task){ taskDao.insertTask(task);}
+    public void createTask(Task task) {
+        taskDao.insertTask(task);
+    }
 
     //DELETE
-    public void deleteTask(long taskId){taskDao.deleteTask(taskId);}
+    public void deleteTask(Task task) {
+        taskDao.deleteTask(task);
+    }
 
     //UPDATE
-    public void updateDatabase(Task task){taskDao.updateTask(task);}
+    public void updateDatabase(Task task) {
+        taskDao.updateTask(task);
+    }
 }
