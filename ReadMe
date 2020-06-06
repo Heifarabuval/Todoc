@@ -1,8 +1,10 @@
 TODOC est une une mini-application pour le P5 du parcours Grande École du Numérique.
+============================================================================================
+
 
 
 Liste des fonctionnalités:
-●Lister les tâches​ .
+● Lister les tâches​.
 ● Ajouter une tâche​ à réaliser.
 ● Supprimer une tâche​ à réaliser.
 ● Trier les tâches​ , par nom de projet OU par date de création.
