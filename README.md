@@ -29,5 +29,5 @@ https://github.com/Heifarabuval/Entrevoisins.git
 
 
 ```
-<img src="https://raw.githubusercontent.com/Heifarabuval/Entrevoisins/master/images/OS.png" width="40" height "40">
+<img src="https://raw.githubusercontent.com/Heifarabuval/Entrevoisins/master/images/OS.png" width="40" height="40">
 
