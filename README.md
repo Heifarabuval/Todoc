@@ -2,13 +2,13 @@
 # Todoc
 TODOC est une une mini-application pour le P5 du parcours Grande École du Numérique.
 
-<img src="https://raw.githubusercontent.com/Heifarabuval/Entrevoisins/master/images/todoc.png">
+<img src="https://raw.githubusercontent.com/Heifarabuval/Todoc/master/images/todoc.png">
 
 
 ## Téléchargement
 Utiliser Android Studio > File > New > Project From Version Control > Copier-Coller L'Url
 ```bash
-https://github.com/Heifarabuval/Entrevoisins.git
+https://github.com/Heifarabuval/Todoc.git
 ```
 
 ## Fonctionalités 
