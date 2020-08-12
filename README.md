@@ -24,9 +24,9 @@ https://github.com/Heifarabuval/Todoc.git
 ```bash
 ● Application responsive sur toutes les tailles de téléphones et tablettes Android en modes portrait et paysage.  
 ● Application qui supporte Android 5.0 (API 21) et ses versions supérieures.  
-● Tests unitaires pour chaque fonctionnalité.  
+● Implémentation d’une base de données SQLite. Objectif : sauvegarde de la liste des tâches facilitée et structurée.
 ● Tests instrumentalisés.  
-
+● Tests unitaires pour chaque fonctionnalité.
 
 ```
 <img src="https://raw.githubusercontent.com/Heifarabuval/Entrevoisins/master/images/OS.png" width="40" height="50">
