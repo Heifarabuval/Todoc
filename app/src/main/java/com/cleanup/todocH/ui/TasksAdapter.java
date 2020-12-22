@@ -18,11 +18,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>Adapter which handles the list of tasks to display in the dedicated RecyclerView.</p>
- *
- * @author Gaëtan HERFRAY
- */
+
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
     /**
      * The list of tasks the adapter deals with
@@ -88,8 +84,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     /**
      * <p>ViewHolder for task items in the tasks list</p>
-     *
-     * @author Gaëtan HERFRAY
+     
      */
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         /**
