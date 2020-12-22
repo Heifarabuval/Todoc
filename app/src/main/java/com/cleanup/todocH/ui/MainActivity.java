@@ -29,12 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * <p>Home activity of the application which is displayed when the user opens the app.</p>
- * <p>Displays the list of tasks.</p>
- *
- * @author Gaëtan HERFRAY
- */
+
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
     /**
      * List of all projects available in the application
